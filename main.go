@@ -124,7 +124,7 @@ func listStories() {
 	}
 	fmt.Printf("item %d to %d of %s at %s\n", startIndex+1, startIndex+countPerPage, contextName, time.Now().Format(layout))
 	for i := startIndex + 1; i <= startIndex+countPerPage; i++ {
-		fmt.Printf("%02d. [%s %4d %15s] %s\n", i, time.Unix(int64(items[i].Time), 0).Format(layout), items[i].Score, items[i].By, items[i].Title)
+		fmt.Printf("[%s %4d %15s] %02d. %s\n", time.Unix(int64(items[i].Time), 0).Format(layout), items[i].Score, items[i].By, i, items[i].Title)
 	}
 }
 
@@ -152,7 +152,7 @@ func getItem(listItemChan chan listItem, itemChan chan Item) {
 // getInput presents available options to user and returns the option provided by user
 func getInput() string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("enter choice [<sno>|(m)ore|(t)op|(b)est|(n)ew|(q)uit|(r)efresh]: ")
+	fmt.Print("enter your choice [<sno> | (m)ore | (t)op | (b)est | (n)ew | (q)uit | (r)efresh]: ")
 	text, _ := reader.ReadString('\n')
 	return strings.Trim(text, "\n \t")
 }
