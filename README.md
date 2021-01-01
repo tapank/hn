@@ -1,5 +1,5 @@
 ## hn
-### a terminal based hacker news reader (https://news.ycombinator.com) for the lurker.
+### terminal based hacker news (https://news.ycombinator.com) news for a lurker
 
 To run: download and execute the binary: ./hn
 
@@ -25,7 +25,7 @@ Enter an option and hit return. Options are:
 - q: quit the program
 - r: refresh the list, while retaining current category and current offset of post rank
 
-3. That's it. There is no other functionality in this tool (upvoting, posting, etc.), and that is why this is an ideal tool for a lurker who likes to keep an eye on hn all day long.
+3. That's it. There is no other functionality in this tool (upvoting, posting, etc.), and is ideal for a lurker to keep an eye on hn all day long.
 
 ### Note:
 
