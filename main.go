@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"strconv"
@@ -106,7 +107,7 @@ func loadItems(endpoint string) {
 	}
 
 	for i := 0; i < countPerPage; i++ {
-		item := <-itemChan
+		item := <- itemChan
 		items[item.sno] = item
 	}
 }
@@ -124,7 +125,7 @@ func listStories() {
 	}
 	fmt.Printf("item %d to %d of %s at %s\n", startIndex+1, startIndex+countPerPage, contextName, time.Now().Format(layout))
 	for i := startIndex + 1; i <= startIndex+countPerPage; i++ {
-		fmt.Printf("[%s %4d %15s] %02d. %s\n", time.Unix(int64(items[i].Time), 0).Format(layout), items[i].Score, items[i].By, i, items[i].Title)
+		fmt.Printf("[%s %4d %15s] %02d. %s (%s)\n", time.Unix(int64(items[i].Time), 0).Format(layout), items[i].Score, items[i].By, i, items[i].Title, domain(items[i].Url))
 	}
 }
 
@@ -171,4 +172,12 @@ func openItemInBrowser(ch string) {
 		}
 	}
 	fmt.Println("unknown option:", ch)
+}
+
+func domain(uri string) string {
+	u, err := url.Parse(uri)
+	if err != nil {
+		panic(err)
+	}
+	return u.Hostname()
 }
