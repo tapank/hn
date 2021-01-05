@@ -24,13 +24,14 @@ const (
 	PAGE = "https://news.ycombinator.com/item?id=%d"
 )
 
+// Item is the news item
 type Item struct {
 	sno   int    // The serial number of the item as listed on hn
-	Id    int    `json:"id"`    // The item's unique id.
+	ID    int    `json:"id"`    // The item's unique id.
 	Type  string `json:"type"`  // The type of item. One of "job", "story", "comment", "poll", or "pollopt".
 	By    string `json:"by"`    // The username of the item's author.
 	Time  int    `json:"time"`  // Creation date of the item, in Unix Time.
-	Url   string `json:"url"`   // The URL of the story.
+	URL   string `json:"url"`   // The URL of the story.
 	Score int    `json:"score"` // The story's score, or the votes for a pollopt.
 	Title string `json:"title"` // The title of the story, poll or job. HTML.
 }
@@ -69,7 +70,7 @@ func main() {
 
 type listItem struct {
 	sno    int
-	itemId int
+	itemID int
 }
 
 // refresh loads and lists stories from the context and provides an option to reset startIndex
@@ -107,7 +108,7 @@ func loadItems(endpoint string) {
 	}
 
 	for i := 0; i < countPerPage; i++ {
-		item := <- itemChan
+		item := <-itemChan
 		items[item.sno] = item
 	}
 }
@@ -125,14 +126,18 @@ func listStories() {
 	}
 	fmt.Printf("item %d to %d of %s at %s\n", startIndex+1, startIndex+countPerPage, contextName, time.Now().Format(layout))
 	for i := startIndex + 1; i <= startIndex+countPerPage; i++ {
-		fmt.Printf("[%s %4d %15s] %02d. %s (%s)\n", time.Unix(int64(items[i].Time), 0).Format(layout), items[i].Score, items[i].By, i, items[i].Title, domain(items[i].Url))
+		ts := time.Unix(int64(items[i].Time), 0).Format(layout)
+		sc := items[i].Score
+		by := items[i].By
+		title := items[i].Title + domain(items[i].URL)
+		fmt.Printf("[%s %4d %15s] %02d. %s\n", ts, sc, by, i, title)
 	}
 }
 
 // getItem gets the details of an item based on item id and is expected to be run in a go routine
 func getItem(listItemChan chan listItem, itemChan chan Item) {
 	li := <-listItemChan
-	res, err := http.Get(fmt.Sprintf(ITEM, li.itemId))
+	res, err := http.Get(fmt.Sprintf(ITEM, li.itemID))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -164,7 +169,7 @@ func openItemInBrowser(ch string) {
 	if choice, err := strconv.Atoi(ch); err == nil {
 		if item, ok := items[choice]; ok {
 			fmt.Printf("opening item %d: %s\n", choice, item.Title)
-			cmd := exec.Command("open", "-a", "/Applications/Firefox.app", fmt.Sprintf(PAGE, item.Id))
+			cmd := exec.Command("open", "-a", "/Applications/Firefox.app", fmt.Sprintf(PAGE, item.ID))
 			if err := cmd.Run(); err != nil {
 				panic(err.Error())
 			}
@@ -174,10 +179,14 @@ func openItemInBrowser(ch string) {
 	fmt.Println("unknown option:", ch)
 }
 
-func domain(uri string) string {
+func domain(uri string) (ul string) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		panic(err)
 	}
-	return u.Hostname()
+	ul = u.Hostname()
+	if len(ul) > 0 {
+		ul = fmt.Sprintf(" (%s)", ul)
+	}
+	return
 }
