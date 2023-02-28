@@ -163,8 +163,8 @@ func getInput() string {
 	return strings.Trim(text, "\n \t")
 }
 
-// openItemInBrowser opens the hn page for a given item, and it assumes the application is running on MacOS and also
-// Firefox is installed. Change the command to suite your environment.
+// openItemInBrowser opens the hn page for a given item, in your default browser on MacOS.
+// Change the command to suite your operating environment.
 func openItemInBrowser(ch string) {
 	if choice, err := strconv.Atoi(ch); err == nil {
 		if item, ok := items[choice]; ok {
