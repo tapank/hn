@@ -169,7 +169,7 @@ func openItemInBrowser(ch string) {
 	if choice, err := strconv.Atoi(ch); err == nil {
 		if item, ok := items[choice]; ok {
 			fmt.Printf("opening item %d: %s\n", choice, item.Title)
-			cmd := exec.Command("open", "-a", "/Applications/Firefox.app", fmt.Sprintf(PAGE, item.ID))
+			cmd := exec.Command("open", fmt.Sprintf(PAGE, item.ID))
 			if err := cmd.Run(); err != nil {
 				panic(err.Error())
 			}
