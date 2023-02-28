@@ -17,7 +17,7 @@ The fields from left to write are: post date (mm/dd), post time (HH:mm), points,
 
 Enter an option and hit return. Options are:
 
-- sno: the post rank. This opens the post in your Firefox browser
+- sno: the post rank. This opens the post in your default browser
 - m: next set of 30 posts in the currently chosen category (top posts is default)
 - t: list top 30 posts
 - b: list top 30 posts in best category
@@ -29,5 +29,5 @@ Enter an option and hit return. Options are:
 
 ### Note:
 
-- The release binary is for MaxOS (arch: amd64). You will need to download source and build your binary on a different platform.
-- The posts open in Firefox. If you want to use a different browser, please update source and rebuild to suite your needs.
+- The release binary is for MaxOS (arch: amd64). You will need to download source and build your binary for other platforms.
+- The posts open in your default browser. If you want to use a different browser, please update source and rebuild to suite your needs.
