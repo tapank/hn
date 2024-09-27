@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -68,6 +68,12 @@ func main() {
 	}
 }
 
+func clearscreen() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
+
 type listItem struct {
 	sno    int
 	itemID int
@@ -79,6 +85,7 @@ func refresh(resetStartIndex bool) {
 		startIndex = 0
 	}
 	loadItems(context)
+	clearscreen()
 	listStories()
 }
 
@@ -89,7 +96,7 @@ func loadItems(endpoint string) {
 		panic(err.Error())
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -142,7 +149,7 @@ func getItem(listItemChan chan listItem, itemChan chan Item) {
 		panic(err.Error())
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		panic(err.Error())
 	}
