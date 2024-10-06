@@ -46,21 +46,21 @@ func main() {
 	refresh(true)
 	for {
 		switch choice := getInput(); choice {
-		case "m", "more":
+		case "m", "more", "M":
 			startIndex += countPerPage
 			refresh(false)
-		case "n", "new":
+		case "n", "new", "N":
 			context = NEW
 			refresh(true)
-		case "t", "top":
+		case "t", "top", "T":
 			context = TOP
 			refresh(true)
-		case "b", "best":
+		case "b", "best", "B":
 			context = BEST
 			refresh(true)
-		case "q", "quit":
+		case "q", "quit", "Q":
 			return
-		case "r", "refresh":
+		case "r", "refresh", "R":
 			refresh(false)
 		default:
 			openItemInBrowser(choice)
